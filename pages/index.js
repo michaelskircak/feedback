@@ -13,7 +13,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Heading>Feedback 2</Heading>
+        <Heading>Feedback</Heading>
         <Text>
           Current user: <Code>{auth.user ? auth.user.email : 'None'}</Code>
         </Text>
