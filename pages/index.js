@@ -10,6 +10,7 @@ const Home = () => {
     <div className="container">
       <Head>
         <title>Feedback</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         <Heading>Feedback</Heading>
