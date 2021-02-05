@@ -27,7 +27,9 @@ const Home = () => {
       </Icon>
 
       {auth.user ? (
-        <Button onClick={(e) => auth.signout()}>Sign Out</Button>
+        <Button as="a" href="/dashboard">
+          View Dashboard
+        </Button>
       ) : (
         <Button mt={4} size="sm" onClick={(e) => auth.signInWithGithub()}>
           Sign In
