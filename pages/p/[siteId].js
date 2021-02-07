@@ -25,6 +25,7 @@ export async function getStaticProps(context) {
   };
 }
 
+//vercel breaking here
 export async function getStaticPaths() {
   const { sites } = await getAllSites();
   const paths = sites.map((site) => ({
