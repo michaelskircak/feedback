@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { mutate } from 'swr';
 import {
   Modal,
@@ -10,22 +10,19 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-  Input,
   Button,
+  Input,
   useToast,
   useDisclosure
 } from '@chakra-ui/react';
 
-import { useForm } from 'react-hook-form';
 import { createSite } from '@/lib/db';
-import useAuth from '@/lib/auth';
-import fetcher from '@/utils/fetcher';
+import { useAuth } from '@/lib/auth';
 
-function AddSiteModal({ children }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+const AddSiteModal = ({ children }) => {
   const toast = useToast();
   const auth = useAuth();
-  const initialRef = React.useRef();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleSubmit, register } = useForm();
 
   const onCreateSite = ({ name, url }) => {
@@ -35,6 +32,7 @@ function AddSiteModal({ children }) {
       name,
       url
     };
+
     createSite(newSite);
     toast({
       title: 'Success!',
@@ -43,9 +41,8 @@ function AddSiteModal({ children }) {
       duration: 5000,
       isClosable: true
     });
-
     mutate(
-      '/api/sites',
+      ['/api/sites', auth.user.token],
       async (data) => {
         return { sites: [...data.sites, newSite] };
       },
@@ -69,8 +66,7 @@ function AddSiteModal({ children }) {
       >
         {children}
       </Button>
-
-      <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit(onCreateSite)}>
           <ModalHeader fontWeight="bold">Add Site</ModalHeader>
@@ -79,8 +75,7 @@ function AddSiteModal({ children }) {
             <FormControl>
               <FormLabel>Name</FormLabel>
               <Input
-                ref={initialRef}
-                placeholder="My Site"
+                placeholder="My site"
                 name="name"
                 ref={register({
                   required: 'Required'
@@ -101,10 +96,15 @@ function AddSiteModal({ children }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={onClose} mr={3}>
+            <Button onClick={onClose} mr={3} fontWeight="medium">
               Cancel
             </Button>
-            <Button backgroundColor="#99FFFE" color="#194D4C" type="submit">
+            <Button
+              backgroundColor="#99FFFE"
+              color="#194D4C"
+              fontWeight="medium"
+              type="submit"
+            >
               Create
             </Button>
           </ModalFooter>
@@ -112,6 +112,6 @@ function AddSiteModal({ children }) {
       </Modal>
     </>
   );
-}
+};
 
 export default AddSiteModal;
