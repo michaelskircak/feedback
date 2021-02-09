@@ -12,7 +12,7 @@ import {
   Heading,
   Button
 } from '@chakra-ui/react';
-import useAuth from '@/lib/auth';
+import { useAuth } from '@/lib/auth';
 import AddSiteModal from './AddSiteModal';
 
 const DashboardShell = ({ children }) => {
