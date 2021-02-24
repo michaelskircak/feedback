@@ -7,6 +7,7 @@ const App = ({ Component, pageProps }) => {
     <ChakraProvider theme={theme}>
       <AuthProvider>
         <CSSReset />
+
         <Component {...pageProps} />
       </AuthProvider>
     </ChakraProvider>
