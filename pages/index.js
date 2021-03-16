@@ -26,6 +26,7 @@ const Home = () => {
               `
           }}
         />
+        <title>Feedback</title>
       </Head>
 
       <Text mb={4} fontSize="lg" p={6}>
