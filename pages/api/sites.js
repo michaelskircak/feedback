@@ -1,5 +1,6 @@
 import { auth } from '@/lib/firebase-admin';
 import { getUserSites } from '@/lib/db-admin';
+import { logger, formatObjectKeys } from '@/utils/logger';
 
 import { logger, formatObjectKeys } from '@/utils/logger';
 
@@ -8,7 +9,7 @@ export default async (req, res) => {
     const { uid } = await auth.verifyIdToken(req.headers.token);
     const { sites } = await getUserSites(uid);
 
-    res.status(200).json({ sites });
+    res.status(200).json({ sites: [] });
   } catch (error) {
     logger.error(
       {

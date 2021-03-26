@@ -36,7 +36,6 @@ const Home = ({ allFeedback }) => {
             `
               }}
             />
-            <title>Feedback</title>
           </Head>
 
           <Text mb={4} fontSize="lg" py={4}>

@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { Box, Button, Flex, Link, Avatar, Icon } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
+import { NextSeo } from 'next-seo';
 
 const DashboardShell = ({ children }) => {
   const { user } = useAuth();
