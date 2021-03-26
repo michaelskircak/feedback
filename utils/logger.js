@@ -1,13 +1,11 @@
 import pino from 'pino';
 import { logflarePinoVercel } from 'pino-logflare';
 
-// create pino-logflare console stream for serverless functions and send function for browser logs
 const { stream, send } = logflarePinoVercel({
   apiKey: process.env.NEXT_PUBLIC_LOGFLARE_KEY,
-  sourceToken: process.env.NEXT_PUBLIC_LOGFLARE_SOURCE
+  sourceToken: process.env.NEXT_PUBLIC_LOGFLARE_STREAM
 });
 
-// create pino loggger
 const logger = pino(
   {
     browser: {
@@ -18,7 +16,6 @@ const logger = pino(
     level: 'debug',
     base: {
       env: process.env.NODE_ENV || 'ENV not set',
-      // processes_str: JSON.stringify(process.versions),
       revision: process.env.VERCEL_GITHUB_COMMIT_SHA
     }
   },
