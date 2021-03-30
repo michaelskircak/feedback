@@ -58,13 +58,7 @@ const FeedbackPage = ({ initialFeedback }) => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      width="full"
-      maxWidth="700px"
-      margin="0 auto"
-    >
+    <Box display="flex" flexDirection="column" width="full">
       {auth.user && (
         <Box as="form" onSubmit={onSubmit}>
           <FormControl my={8}>
