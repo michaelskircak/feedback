@@ -4,24 +4,23 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  Heading
+  Heading,
+  Box
 } from '@chakra-ui/react';
 import AddSiteModal from './AddSiteModal';
 
 const SiteTableHeader = ({ isPaidAccount }) => (
-  <>
+  <Box mx={4}>
     <Breadcrumb>
       <BreadcrumbItem>
-        <BreadcrumbLink color="gray.700" fontSize="sm">
-          Sites
-        </BreadcrumbLink>
+        <BreadcrumbLink>Sites</BreadcrumbLink>
       </BreadcrumbItem>
     </Breadcrumb>
     <Flex justifyContent="space-between">
       <Heading mb={8}>My Sites</Heading>
       {isPaidAccount && <AddSiteModal>+ Add Site</AddSiteModal>}
     </Flex>
-  </>
+  </Box>
 );
 
 export default SiteTableHeader;

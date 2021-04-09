@@ -1,36 +1,19 @@
 import React, { useState } from 'react';
 import { Box, Code, Switch } from '@chakra-ui/react';
-
-import { Table, Tr, Th, Td } from './Table';
-import RemoveButton from './RemoveButton';
-import { updateFeedback } from '@/lib/db';
-import { useAuth } from '@/lib/auth';
 import { mutate } from 'swr';
+
+import { Td } from './Table';
+import { useAuth } from '@/lib/auth';
+import { updateFeedback } from '@/lib/db';
+import DeleteFeedbackButton from './DeleteFeedbackButton';
 
 const FeedbackRow = ({ id, author, text, route, status }) => {
   const auth = useAuth();
-  const [checked, setChecked] = useState(status === 'active');
-  const toggleFeedback = async () => {
-    // setChecked(!checked);
-    await updateFeedback(id, { status: !checked ? 'active' : 'pending' });
-    mutate(['/api/feedback', auth.user.token]);
-    // mutate(
-    //   ['/api/feedback', auth.user.token],
-    //   async (data) => {
-    //     const updatedFeedback = data.feedback.find(
-    //       (feedback) => feedback.id !== id
-    //     );
-    //     const allOtherFeedback = data.feedback.filter(
-    //       (feedback) => feedback.id !== id
-    //     );
-    //     updatedFeedback.status = !checked;
+  const isChecked = status === 'active';
 
-    //     return {
-    //       feedback: [updatedFeedback, ...allOtherFeedback]
-    //     };
-    //   },
-    //   false
-    // );
+  const toggleFeedback = async () => {
+    await updateFeedback(id, { status: isChecked ? 'pending' : 'active' });
+    mutate(['/api/feedback', auth.user.token]);
   };
 
   return (
@@ -41,14 +24,10 @@ const FeedbackRow = ({ id, author, text, route, status }) => {
         <Code>{route || '/'}</Code>
       </Td>
       <Td>
-        <Switch
-          color="green"
-          onChange={toggleFeedback}
-          isChecked={status === 'active'}
-        />
+        <Switch color="green" onChange={toggleFeedback} isChecked={isChecked} />
       </Td>
       <Td>
-        <RemoveButton feedbackId={id} />
+        <DeleteFeedbackButton feedbackId={id} />
       </Td>
     </Box>
   );

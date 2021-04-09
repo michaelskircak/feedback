@@ -1,25 +1,28 @@
 import Head from 'next/head';
-import { Box, Button, Flex, Text, Stack } from '@chakra-ui/react';
+import { Box, Button, Flex, Text, Icon, Link, Stack } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
-import { getAllFeedback } from '@/lib/db-admin';
+import { getAllFeedback, getSite } from '@/lib/db-admin';
 import Feedback from '@/components/Feedback';
 import FeedbackLink from '@/components/FeedbackLink';
+import LoginButtons from '@/components/LoginButtons';
 
 const SITE_ID = '6KXYn5DPlcg4SNoFy1mV';
 
 export async function getStaticProps(context) {
   const { feedback } = await getAllFeedback(SITE_ID);
+  const { site } = await getSite(SITE_ID);
 
   return {
     props: {
-      allFeedback: feedback
+      allFeedback: feedback,
+      site
     },
     revalidate: 1
   };
 }
 
-const Home = ({ allFeedback }) => {
+const Home = ({ allFeedback, site }) => {
   const auth = useAuth();
 
   return (
@@ -37,7 +40,7 @@ const Home = ({ allFeedback }) => {
               }}
             />
           </Head>
-
+          <Icon color="black" name="logo" size="48px" mb={2} />
           <Text mb={4} fontSize="lg" py={4}>
             <Text as="span" fontWeight="bold" display="inline">
               Feedback
@@ -62,37 +65,7 @@ const Home = ({ allFeedback }) => {
               View Dashboard
             </Button>
           ) : (
-            <Stack isInline>
-              <Button
-                onClick={(e) => auth.signinWithGitHub()}
-                backgroundColor="gray.900"
-                color="white"
-                fontWeight="medium"
-                mt={4}
-                _hover={{ bg: 'gray.700' }}
-                _active={{
-                  bg: 'gray.800',
-                  transform: 'scale(0.95)'
-                }}
-              >
-                Sign In with GitHub
-              </Button>
-              <Button
-                onClick={(e) => auth.signinWithGoogle()}
-                backgroundColor="white"
-                color="gray.900"
-                variant="outline"
-                fontWeight="medium"
-                mt={4}
-                _hover={{ bg: 'gray.100' }}
-                _active={{
-                  bg: 'gray.100',
-                  transform: 'scale(0.95)'
-                }}
-              >
-                Sign In with Google
-              </Button>
-            </Stack>
+            <LoginButtons />
           )}
         </Flex>
       </Box>
@@ -104,9 +77,14 @@ const Home = ({ allFeedback }) => {
         margin="0 auto"
         mt={8}
       >
-        <FeedbackLink siteId={SITE_ID} />
-        {allFeedback.map((feedback) => (
-          <Feedback key={feedback.id} {...feedback} />
+        <FeedbackLink paths={[SITE_ID]} />
+        {allFeedback.map((feedback, index) => (
+          <Feedback
+            key={feedback.id}
+            settings={site?.settings}
+            isLast={index === allFeedback.length - 1}
+            {...feedback}
+          />
         ))}
       </Box>
     </>
